@@ -562,7 +562,7 @@ toggleCameraBtn.addEventListener('click', async () => {
     try {
       await camera.start();
       cameraActive = true;
-      toggleCameraBtn.textContent = '🛑 Камераны өшіру';
+      toggleCameraBtn.textContent = '🛑 Басқаруды өшіру';
       toggleCameraBtn.classList.add('active');
       gesturePointer.classList.add('active');
     } catch (e) {
@@ -572,7 +572,7 @@ toggleCameraBtn.addEventListener('click', async () => {
   } else {
     await camera.stop();
     cameraActive = false;
-    toggleCameraBtn.textContent = '📷 Камераны қосу';
+    toggleCameraBtn.textContent = '✋ Саусақпен басқару';
     toggleCameraBtn.classList.remove('active');
     gesturePointer.classList.remove('active');
   }
