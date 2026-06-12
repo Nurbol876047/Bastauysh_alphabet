@@ -455,6 +455,35 @@ let cameraActive = false;
 let camera = null;
 let hands = null;
 
+let loaderInterval = null;
+let isModelLoaded = false;
+const modelLoaderToast = document.getElementById('modelLoaderToast');
+const modelLoaderText = document.getElementById('modelLoaderText');
+
+function showLoader() {
+  if (isModelLoaded) return;
+  let countdownVal = 10;
+  modelLoaderText.textContent = `Камера жүктелуде... (${countdownVal})`;
+  modelLoaderToast.classList.add('show');
+  
+  if (loaderInterval) clearInterval(loaderInterval);
+  loaderInterval = setInterval(() => {
+    countdownVal--;
+    if (countdownVal > 0) {
+      modelLoaderText.textContent = `Камера жүктелуде... (${countdownVal})`;
+    } else {
+      modelLoaderText.textContent = `Сәл күте тұрыңыз... ⏳`;
+      clearInterval(loaderInterval);
+    }
+  }, 1000);
+}
+
+function hideLoader() {
+  isModelLoaded = true;
+  modelLoaderToast.classList.remove('show');
+  if (loaderInterval) clearInterval(loaderInterval);
+}
+
 let cursorX = window.innerWidth / 2;
 let cursorY = window.innerHeight / 2;
 
@@ -491,6 +520,8 @@ function initMediaPipe() {
 }
 
 function onResults(results) {
+  if (!isModelLoaded) hideLoader();
+
   if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
     const landmarks = results.multiHandLandmarks[0];
     // Index finger tip is landmark 8
@@ -560,18 +591,23 @@ toggleCameraBtn.addEventListener('click', async () => {
   if (!cameraActive) {
     if (!hands) initMediaPipe();
     try {
+      isModelLoaded = false;
+      showLoader();
       await camera.start();
       cameraActive = true;
       toggleCameraBtn.textContent = '🛑 Басқаруды өшіру';
       toggleCameraBtn.classList.add('active');
       gesturePointer.classList.add('active');
     } catch (e) {
+      hideLoader();
       console.error("Camera error:", e);
       alert("Камераны қосу мүмкін болмады. Рұқсат берілгенін тексеріңіз.");
     }
   } else {
     await camera.stop();
     cameraActive = false;
+    isModelLoaded = false;
+    hideLoader();
     toggleCameraBtn.textContent = '✋ Саусақпен басқару';
     toggleCameraBtn.classList.remove('active');
     gesturePointer.classList.remove('active');
