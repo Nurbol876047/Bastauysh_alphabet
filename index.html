@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="kk">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Қазақ Әліпбиі — Жұлдызды Дала</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="bg-shapes" aria-hidden="true">
+    <span class="circle shape-1"></span>
+    <span class="circle shape-2"></span>
+    <span class="circle shape-3"></span>
+    <span class="circle shape-4"></span>
+    <span class="circle shape-5"></span>
+    <span class="shape-6">★</span>
+    <span class="shape-7">✦</span>
+    <span class="shape-8">●</span>
+  </div>
+
+  <div class="page">
+    <header class="hero" id="top">
+      <button class="theme-toggle" id="themeToggle" aria-pressed="false">🌙 Түнгі режим</button>
+
+      <div class="mascot" aria-hidden="true">
+        <div class="sun">
+          <div class="sun-face">
+            <div class="eye left"></div>
+            <div class="eye right"></div>
+            <div class="cheek left"></div>
+            <div class="cheek right"></div>
+            <div class="smile"></div>
+          </div>
+        </div>
+        <div class="steppe">
+          <div class="hill h2"></div>
+          <div class="yurt">
+            <div class="yurt-dome"></div>
+            <div class="yurt-wall"></div>
+            <div class="yurt-door"></div>
+          </div>
+          <div class="hill"></div>
+        </div>
+      </div>
+
+      <h1 class="hero-title" id="heroTitle" aria-label="Қазақ Әліпбиі"></h1>
+      <p class="subtitle">Әріптерді бірге үйренейік! <span class="sparkle">✨</span></p>
+
+      <div class="stats-row">
+        <div class="stat-card">🔤 42 әріп</div>
+        <div class="stat-card">🔴 Дауысты: 14</div>
+        <div class="stat-card">🔵 Дауыссыз: 28</div>
+      </div>
+    </header>
+
+    <main>
+      <div class="controls">
+        <div class="controls-top">
+          <div class="action-buttons">
+            <button class="btn btn-primary" id="randomBtn"><span class="dice">🎲</span> Кездейсоқ әріп</button>
+            <button id="toggleCameraBtn" class="btn btn-camera">📷 Камераны қосу</button>
+          </div>
+
+          <div class="zoom-controls">
+            <button class="btn btn-zoom" id="zoomOutBtn" aria-label="Кішірейту">🔍-</button>
+            <span class="zoom-level" id="zoomLevel">100%</span>
+            <button class="btn btn-zoom" id="zoomInBtn" aria-label="Үлкейту">🔍+</button>
+          </div>
+        </div>
+
+        <div class="progress-card">
+          <div class="progress-header">
+            <div class="progress-icon">🏆</div>
+            <div class="progress-text">
+              <h3 id="progressTitle">Үйренген әріптер</h3>
+              <p id="progressLabel">42-нің 0-і</p>
+            </div>
+            <button class="btn-reset" id="resetProgressBtn" title="Прогресті тазарту">↻ Тазарту</button>
+            <div class="progress-percentage" id="progressPct">0%</div>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-fill-glow" id="progressFill">
+              <div class="progress-shine"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-container" id="gridContainer">
+        <section class="alphabet-grid" id="alphabetGrid" aria-label="Қазақ әліпбиінің әріптері"></section>
+      </div>
+    </main>
+
+    <footer id="bottom">
+      <p class="footer-message">Сен жақсы жасадың! 🌟</p>
+      <div class="nav-dots" aria-label="Бетте жылдам жылжу">
+        <button class="nav-dot active" data-target="top" aria-label="Жоғарыға өту"></button>
+        <button class="nav-dot" data-target="alphabetGrid" aria-label="Әріптерге өту"></button>
+        <button class="nav-dot" data-target="bottom" aria-label="Төменге өту"></button>
+      </div>
+    </footer>
+  </div>
+
+  <aside class="letter-panel" id="letterPanel" aria-live="polite">
+    <div class="panel-handle" aria-hidden="true"></div>
+    <button class="panel-close" id="panelClose" aria-label="Жабу">✕</button>
+    <div class="panel-content" id="panelContent">
+      <p class="panel-hint">Кез келген әріпті басып көріңіз 👆</p>
+    </div>
+
+    <div class="canvas-container">
+      <canvas id="retinaCanvas"></canvas>
+    </div>
+  </aside>
+
+  <div class="confetti-container" id="confettiContainer" aria-hidden="true"></div>
+  <div class="celebration" id="celebration"></div>
+
+  <!-- Touchless Interaction Elements -->
+  <video class="input_video" style="display:none;" autoplay playsinline></video>
+  <div id="gesturePointer" class="gesture-pointer">
+    <div class="gesture-pointer-inner"></div>
+  </div>
+
+  <script type="module" src="/main.js"></script>
+</body>
+
+</html>
