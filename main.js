@@ -236,20 +236,27 @@ function drawRetinaCanvas(item) {
 
 /* ===================== DUAL-LAYER AUDIO ===================== */
 function speakText(text, onEnd) {
-  if (!('speechSynthesis' in window)) {
-    if (onEnd) onEnd();
-    return;
-  }
-  const utter = new SpeechSynthesisUtterance(text);
-  const voices = window.speechSynthesis.getVoices();
-  const voice = voices.find(v => v.lang.toLowerCase().includes('kk')) ||
-    voices.find(v => v.lang.toLowerCase().includes('ru')) ||
-    voices[0];
-  if (voice) { utter.voice = voice; utter.lang = voice.lang; }
-  utter.rate = 0.85;
-  utter.pitch = 1.05;
-  if (onEnd) utter.onend = onEnd;
-  window.speechSynthesis.speak(utter);
+  const url = `/audio/word_${encodeURIComponent(text)}.mp3?v=5`;
+  const audio = new Audio(url);
+  audio.playbackRate = 1.0;
+  audio.onended = () => { if (onEnd) onEnd(); };
+  audio.play().catch(e => {
+    console.log("Audio play failed, falling back to TTS:", e);
+    if (!('speechSynthesis' in window)) {
+      if (onEnd) onEnd();
+      return;
+    }
+    const utter = new SpeechSynthesisUtterance(text);
+    const voices = window.speechSynthesis.getVoices();
+    const voice = voices.find(v => v.lang.toLowerCase().includes('kk')) ||
+      voices.find(v => v.lang.toLowerCase().includes('ru')) ||
+      voices[0];
+    if (voice) { utter.voice = voice; utter.lang = voice.lang; }
+    utter.rate = 0.85;
+    utter.pitch = 1.05;
+    if (onEnd) utter.onend = onEnd;
+    window.speechSynthesis.speak(utter);
+  });
 }
 
 function speakWord(letter, word, typeLabel) {
