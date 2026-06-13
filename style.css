@@ -1178,6 +1178,13 @@ main {
   align-items: center;
   gap: 6px;
   border: 2px solid var(--sky-soft);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.word-chip:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+  background: var(--sky-soft);
 }
 
 .panel-fact {
